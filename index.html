@@ -1,0 +1,551 @@
+<!doctype html><html><head><title>Panduan DataPM RSBD</title><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+<style>
+/* Tata letak: kolom daftar pelajaran di kiri, pemutar langkah di kanan; di ponsel daftar menjadi baris geser di atas pemutar. */
+:root{
+  --bg:#F4F5FA; --surface:#FFFFFF; --ink:#161A2B; --mut:#586079; --line:#DDE0EC;
+  --accent:#5A3FD1; --accent-ink:#FFFFFF; --soft:#ECE8FB; --good:#13804A; --warn:#A8520A; --bad:#BE3328;
+  --good-soft:#E2F4EA; --warn-soft:#FBEBD8; --bad-soft:#FADFDC;
+  --c2:#2563EB; --c2s:#E3ECFF; --c3:#0E8F7E; --c3s:#DDF4EF; --c4:#C2570C; --c4s:#FBEBD8; --hero1:#3A1C9E; --hero2:#2748C8;
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1019; --surface:#171A28; --ink:#ECEEF8; --mut:#9AA1BA; --line:#2A2F44;
+  --accent:#A28BFF; --accent-ink:#14102E; --soft:#262250; --good:#4CC38A; --warn:#F0A25B; --bad:#F2877E;
+  --good-soft:#12301F; --warn-soft:#3A2812; --bad-soft:#3C1A17; --c2:#7AA7FF; --c2s:#1B2A55; --c3:#4FD1BC; --c3s:#0F332D; --c4:#F0A25B; --c4s:#3A2812; --hero1:#241A68; --hero2:#1B2E86; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1019; --surface:#171A28; --ink:#ECEEF8; --mut:#9AA1BA; --line:#2A2F44;
+  --accent:#A28BFF; --accent-ink:#14102E; --soft:#262250; --good:#4CC38A; --warn:#F0A25B; --bad:#F2877E;
+  --good-soft:#12301F; --warn-soft:#3A2812; --bad-soft:#3C1A17; --c2:#7AA7FF; --c2s:#1B2A55; --c3:#4FD1BC; --c3s:#0F332D; --c4:#F0A25B; --c4s:#3A2812; --hero1:#241A68; --hero2:#1B2E86; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-body);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1080px;margin-inline:auto;display:grid;gap:20px}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{display:grid;gap:14px}
+.top h1{font-size:clamp(26px,5vw,38px)}
+.top p{margin:0;color:var(--mut);max-width:62ch}
+.roles{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:0;margin:0}
+.roles legend{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:0;margin-bottom:8px}
+.roles label{position:relative}
+.roles input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.roles span{display:block;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-weight:500}
+.roles input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.roles input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.prog{display:flex;align-items:center;gap:12px;color:var(--mut);font-size:13px}
+.bar{flex:1;max-width:280px;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--good);width:0;transition:width .3s}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
+.list{display:grid;gap:6px;position:sticky;top:12px}
+.list button{display:flex;gap:10px;align-items:center;text-align:left;padding:10px 12px;border:1px solid transparent;border-radius:10px;background:transparent}
+.list button:hover{background:var(--surface)}
+.list button[aria-current="true"]{background:var(--surface);border-color:var(--line);font-weight:600}
+.tick{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:12px;color:transparent}
+.done .tick{background:var(--good);border-color:var(--good);color:#fff}
+.player{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:18px;min-width:0}
+.phead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:baseline}
+.phead h2{font-size:clamp(21px,3.4vw,27px)}
+.tag{font-size:12px;color:var(--mut)}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dots button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:12px;font-weight:600}
+.dots button[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px;align-items:start}
+.step h3{font-size:19px;margin-bottom:8px}
+.step p{margin:0 0 10px}
+.note{border-left:3px solid var(--warn);background:var(--warn-soft);padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;margin-top:6px}
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn[disabled]{opacity:.45;cursor:default}
+.fin{background:var(--good-soft);border:1px solid var(--good);color:var(--ink);border-radius:12px;padding:12px 14px}
+/* Tampilan contoh aplikasi */
+.mock{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);min-width:0}
+.mbar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--surface);border-bottom:1px solid var(--line);font-size:11px;color:var(--mut)}
+.mbar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.mbar span{margin-left:8px}
+.mbody{padding:14px;display:grid;gap:10px;font-size:13px}
+.mbody h4{font-size:16px}
+.mc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px}
+.mf{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:6px 10px;display:grid}
+.mf small{color:var(--mut);font-size:11px}
+.mb{display:inline-block;padding:7px 14px;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:12.5px;text-align:center}
+.mb.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.mb.wide{display:block}
+.mb.dgr{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.gbtn{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);font-weight:600;font-size:12.5px}
+.sep{text-align:center;color:var(--mut);font-size:11px}
+.mcheck{display:flex;gap:8px;align-items:center;font-weight:600;font-size:12.5px;padding:2px}
+.box{width:16px;height:16px;border-radius:4px;border:2px solid var(--accent);display:inline-block;position:relative}
+.box.on{background:var(--accent)}
+.box.on::after{content:"";position:absolute;left:3px;top:0;width:4px;height:8px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.hl{outline:2px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 6px var(--soft);border-radius:8px}
+@media (prefers-reduced-motion:no-preference){.hl{animation:pulse 1.8s ease-in-out infinite}}
+@keyframes pulse{50%{box-shadow:0 0 0 10px transparent}}
+.sidebar{display:grid;gap:3px}
+.sidebar button{text-align:left;border:0;background:transparent;padding:7px 10px;border-radius:8px;font-size:12.5px}
+.sidebar button[aria-pressed="true"]{background:var(--soft);font-weight:600}
+.sdesc{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:12.5px;min-height:3.6em}
+.phone{width:min(260px,100%);margin-inline:auto;border:6px solid var(--ink);border-radius:26px;overflow:hidden;background:var(--bg)}
+.phone .mbody{padding:10px;min-height:200px;align-content:start}
+.pnav{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border-top:1px solid var(--line);background:var(--surface);font-size:10.5px;text-align:center}
+.pnav span{padding:8px 2px;position:relative}
+.pnav .on{color:var(--accent);font-weight:700}
+.badge{position:absolute;top:2px;right:12%;min-width:16px;height:16px;border-radius:8px;background:var(--bad);color:#fff;font-size:10px;line-height:16px}
+.off{background:var(--warn);color:#fff;text-align:center;font-size:11px;font-weight:600;padding:5px}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font-size:11.5px;font-weight:600;background:var(--surface)}
+.chip[aria-pressed="true"]{background:var(--soft);border-color:var(--accent)}
+.st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.st.g{background:var(--good-soft);color:var(--good)}.st.w{background:var(--warn-soft);color:var(--warn)}.st.b{background:var(--bad-soft);color:var(--bad)}.st.n{background:var(--soft);color:var(--accent)}
+.prow{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.prow small{color:var(--mut)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{border:0;border-bottom:2px solid transparent;background:transparent;padding:5px 8px;font-size:12px;font-weight:600;color:var(--mut)}
+.tabs button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.flow{display:flex;gap:4px;flex-wrap:wrap}
+.flow .st{opacity:.35}.flow .st.cur{opacity:1;outline:2px solid var(--accent);outline-offset:1px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.acts button,.mi{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:600}
+.mi{width:100%;font-weight:500}
+.err{color:var(--bad);font-size:12px;min-height:1.2em}
+.log{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--mut)}
+/* Tanya jawab */
+.faq{display:grid;gap:12px}
+.faq h2{font-size:24px}
+.faq input{width:100%;font:inherit;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq details p{margin:8px 0 0;color:var(--mut)}
+.foot{color:var(--mut);font-size:12.5px}
+.about{display:grid;gap:16px}.about h2{font-size:24px}.about>p{margin:0;color:var(--mut);max-width:70ch}
+.pts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.pt{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.pt b{display:block;margin-bottom:2px}.pt span{color:var(--mut);font-size:13.5px}
+.xplore{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;align-items:start}
+.xplore h3{font-size:19px;margin:12px 0 6px}.xplore p{margin:0 0 8px}
+.mchips{display:flex;flex-wrap:wrap;gap:6px}.mchips .chip{cursor:pointer;font-size:12.5px;padding:5px 12px}
+.xdl{display:grid;gap:2px;margin-top:8px;font-size:13.5px}.xdl b{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.seg button{border:0;background:transparent;padding:7px 16px;font-weight:600}.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.scrollx{overflow-x:auto}
+.dsk{display:grid;grid-template-columns:132px 1fr;min-width:540px;font-size:12.5px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.dsk .sb{background:var(--surface);border-right:1px solid var(--line);padding:10px 8px;display:grid;gap:2px;align-content:start}
+.dsk .logo{font-family:var(--f-display);font-weight:700;margin:2px 6px 8px}.dsk .logo span{color:var(--accent)}
+.dsk .sb button{border:0;background:transparent;text-align:left;padding:6px 8px;border-radius:7px;font-size:12px}.dsk .sb button.on{background:var(--soft);font-weight:700}
+.dsk .ct{padding:14px;display:grid;gap:10px;align-content:start;min-height:330px}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px}.stat small{display:block;color:var(--mut);font-size:11px}.stat b{font-family:var(--f-display);font-size:20px}
+.bars{display:grid;gap:6px}.bars div{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center;font-size:11.5px}.bars i{display:block;height:8px;border-radius:4px;background:var(--accent)}
+.tbl{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}.tbl div{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;padding:6px 10px;border-top:1px solid var(--line);font-size:12px}.tbl div:first-child{border-top:0;font-weight:700;color:var(--mut);font-size:11px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.sheet{display:grid;gap:6px}
+/* ===== Rancangan ulang: hero, tab, panggung perangkat ===== */
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:clamp(20px,4vw,40px);background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:center}
+.hero h1{color:#fff;font-size:clamp(28px,5vw,44px);margin:6px 0 10px}
+.hero p{margin:0 0 18px;color:rgba(255,255,255,.86);max-width:54ch;font-size:15.5px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:#D9D0FF}
+.hero .roles{margin-bottom:16px}.hero .roles legend{color:#D9D0FF}
+.hero .roles span{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.38);color:#fff}
+.hero .roles input:checked+span{background:#fff;color:#2E1A86;border-color:#fff}
+.hero .roles input:focus-visible+span{outline-color:#fff}
+.hero .prog{color:rgba(255,255,255,.85);margin-bottom:16px}.hero .bar{background:rgba(255,255,255,.25)}.hero .bar i{background:#7EE0A8}
+.btn.light{background:#fff;color:#2E1A86;border-color:#fff}
+.art{width:100%;height:auto;max-height:290px}
+.tabbar{display:flex;gap:4px;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;overflow-x:auto;margin-top:-4px}
+.tabbar button{border:0;border-bottom:3px solid transparent;background:transparent;padding:13px 18px;font-weight:600;color:var(--mut);white-space:nowrap}
+.tabbar button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.panel{display:grid;gap:20px}
+[hidden]{display:none!important}
+.pnav{font-size:10px}.pnav button,.pnav span{white-space:nowrap}
+.ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--accent)}
+.ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ic.c2{background:var(--c2s);color:var(--c2)}.ic.c3{background:var(--c3s);color:var(--c3)}.ic.c4{background:var(--c4s);color:var(--c4)}
+.pt{display:grid;gap:10px;align-content:start}
+.pt b{font-family:var(--f-display);font-size:17px;margin:0}
+.xp{display:grid;gap:14px}
+.xp-h{display:grid;gap:8px}
+.mchips .chip{display:inline-flex;gap:6px;align-items:center}.mchips .chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mchips .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.xinfo{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.xinfo h3{font-size:22px;margin:0 0 6px}.xinfo p{margin:0;color:var(--mut)}
+.xwho{border-left:3px solid var(--accent);padding-left:14px;font-size:13.5px}.xwho b{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+.stage2{display:grid;grid-template-columns:minmax(0,1fr) 236px;gap:26px;align-items:end;padding:26px;border-radius:20px;background:linear-gradient(140deg,var(--soft),var(--bg) 70%);border:1px solid var(--line)}
+.cap{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--mut);margin-bottom:8px}
+.stage2 .dsk{box-shadow:0 14px 34px rgba(30,20,80,.16)}
+.stage2 .phone{box-shadow:0 14px 34px rgba(30,20,80,.22);width:100%}
+.stagebox{padding:18px;border-radius:14px;background:linear-gradient(140deg,var(--soft),var(--bg) 75%)}
+.list button{align-items:center;padding:10px 12px;border-color:var(--line);background:var(--surface)}
+.list button .ic{width:34px;height:34px;border-radius:10px}.list button .ic svg{width:18px;height:18px}
+.list button small{display:block;color:var(--mut);font-weight:400;font-size:12px}
+.list button.done .ic{background:var(--good-soft);color:var(--good)}
+.stepno{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--soft);padding:3px 10px;border-radius:99px;margin-bottom:8px}
+.faqgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;align-items:start}
+@media (max-width:980px){.stage2{grid-template-columns:minmax(0,1fr)}.stage2 .phone{max-width:240px}.xinfo{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){.hero{grid-template-columns:minmax(0,1fr)}.art{display:none}.stage2{padding:16px}}
+@media (max-width:860px){.xplore{grid-template-columns:minmax(0,1fr);padding:16px}}
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .list{position:static;display:flex;overflow-x:auto;padding-bottom:6px;gap:8px}
+  .list button{flex:none;border-color:var(--line);background:var(--surface);white-space:nowrap}
+  .step{grid-template-columns:minmax(0,1fr)}
+  .player{padding:16px}
+}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Panduan pengguna</div>
+      <h1>Pakai DataPM RSBD dengan percaya diri</h1>
+      <p>Pilih peran Anda, lalu pelajari menu dan alur kerja yang sesuai. Semua contoh memakai data fiktif, dan sebagian bisa dicoba langsung.</p>
+      <fieldset class="roles" id="roles"></fieldset>
+      <div class="prog"><div class="bar" aria-hidden="true"><i id="barfill"></i></div><span id="progtxt" role="status"></span></div>
+      <button type="button" class="btn light" data-tab="belajar">Mulai belajar</button>
+    </div>
+    <svg class="art" viewBox="0 0 360 250" aria-hidden="true">
+      <circle cx="292" cy="52" r="34" fill="#FFE49A"/><circle cx="64" cy="46" r="16" fill="#fff" fill-opacity=".18"/><circle cx="138" cy="28" r="8" fill="#fff" fill-opacity=".18"/>
+      <path d="M8 200Q80 172 180 190T352 186V232a14 14 0 0 1-14 14H22a14 14 0 0 1-14-14z" fill="#fff" fill-opacity=".22"/>
+      <path d="M36 122L100 68l64 54z" fill="#CDBFFF"/><rect x="52" y="120" width="96" height="80" fill="#fff"/><rect x="88" y="152" width="24" height="48" rx="6" fill="#6A47E0"/>
+      <path d="M100 100c-8-10-22 0-12 10l12 10 12-10c10-10-4-20-12-10z" fill="#F472B6"/>
+      <circle cx="214" cy="118" r="14" fill="#FFE08A"/><rect x="198" y="136" width="32" height="64" rx="16" fill="#38BDF8"/>
+      <circle cx="262" cy="140" r="13" fill="#FBD2B0"/><rect x="248" y="156" width="28" height="40" rx="14" fill="#F472B6"/><circle cx="262" cy="190" r="20" fill="none" stroke="#fff" stroke-width="4"/>
+      <circle cx="310" cy="124" r="13" fill="#FBD2B0"/><rect x="296" y="142" width="28" height="58" rx="14" fill="#B79CFF"/>
+    </svg>
+  </header>
+  <div class="tabbar" role="tablist" aria-label="Bagian panduan">
+    <button type="button" role="tab" data-tab="kenal" aria-selected="true">Mengenal aplikasi</button>
+    <button type="button" role="tab" data-tab="belajar" aria-selected="false">Pelajaran</button>
+    <button type="button" role="tab" data-tab="tanya" aria-selected="false">Tanya jawab</button>
+  </div>
+  <section class="panel" id="p-kenal" role="tabpanel">
+    <div class="pts" id="pts"></div>
+    <div class="xp">
+      <div class="xp-h"><div class="tag">JELAJAHI MENU UNTUK PERAN: <b id="xrole"></b></div><div class="mchips" id="xchips"></div></div>
+      <div class="xinfo" id="xtext"></div>
+      <div class="stage2"><div><div class="cap">Tampilan komputer</div><div class="scrollx" id="xdsk"></div></div><div><div class="cap">Tampilan ponsel</div><div id="xph"></div></div></div>
+    </div>
+  </section>
+  <section class="panel" id="p-belajar" role="tabpanel" hidden>
+    <div class="layout">
+      <nav class="list" id="list" aria-label="Daftar pelajaran"></nav>
+      <main class="player" id="player" aria-live="polite"></main>
+    </div>
+  </section>
+  <section class="panel faq" id="p-tanya" role="tabpanel" hidden aria-labelledby="faqh">
+    <h2 id="faqh">Masalah yang sering muncul</h2>
+    <input id="faqq" type="search" placeholder="Cari masalah, misalnya: offline, password, tamu" aria-label="Cari masalah">
+    <div id="faqlist" class="faqgrid"></div>
+  </section>
+  <p class="foot">Hak akses sebenarnya ditentukan Admin dan diperiksa di server. Bila menu atau tombol di aplikasi Anda berbeda dari panduan ini, peran Anda mungkin memiliki pengaturan khusus.</p>
+</div>
+
+<script>
+const ROLES = { tamu: 'Tamu', umum: 'Pegawai umum', khusus: 'Pegawai khusus', kepala: 'Kepala', admin: 'Admin' };
+const KEY_ROLE = 'datapm-panduan-peran', KEY_DONE = 'datapm-panduan-selesai';
+const $ = s => document.querySelector(s);
+const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* abaikan */ } };
+
+/* ---------- potongan tampilan contoh ---------- */
+const frame = b => `<div class="mock"><div class="mbar"><i></i><i></i><i></i><span>DataPM RSBD</span></div><div class="mbody">${b}</div></div>`;
+const btn = (t, hl, c = '') => `<span class="mb ${c} ${hl ? 'hl' : ''}">${t}</span>`;
+const field = (l, v, hl) => `<div class="mf ${hl ? 'hl' : ''}"><small>${l}</small><span>${v}</span></div>`;
+const phone = (b, nav = '') => `<div class="phone"><div class="mbody">${b}</div>${nav}</div>`;
+const login = hl => frame(`<h4>Masuk</h4><div class="gbtn ${hl === 'google' ? 'hl' : ''}">Lanjutkan sebagai Anda</div><div class="sep">atau</div>${field('Username', 'nama.pengguna', hl === 'form')}${field('Password', '••••••••', hl === 'form')}<label class="mcheck ${hl === 'ingat' ? 'hl' : ''}"><b class="box on"></b> Ingat saya</label>${btn('Masuk', hl === 'masuk', 'wide')}`);
+const settings = hl => frame(`<h4>Setelan</h4><div class="mc"><b>Pasang aplikasi</b><span>Pasang DataPM di layar utama agar terbuka seperti aplikasi biasa.</span>${btn('Pasang aplikasi', hl === 'pasang')}</div><div class="mc"><b>Username dan password</b><span>Buat agar bisa masuk tanpa Google.</span></div><div class="mc"><b>Sesi</b><span>Keluar dari aplikasi di perangkat ini.</span>${btn('Keluar', hl === 'keluar', 'dgr')}</div>`);
+const page = (t, ...p) => frame(`<h4>${t}</h4>${p.join('')}`);
+const card = (...p) => `<div class="mc">${p.join('')}</div>`;
+
+const MENU = {
+  '': ['Beranda', 'Ringkasan angka, grafik, data yang belum lengkap, dan aktivitas terbaru.'],
+  pm: ['Data PM', 'Daftar Penerima Manfaat: cari, saring, lihat profil, tambah, dan ubah.'],
+  tambahan: ['Data Tambahan', 'Catatan dari tenaga profesional, sesuai tingkat akses.'],
+  rekap: ['Rekap', 'Rekap per kategori dan periode, dengan pembanding dan cetak.'],
+  analisis: ['Analisis', 'Analisis data PM yang lebih rinci.'],
+  pengingat: ['Pengingat', 'Data yang perlu diperbarui atau dilengkapi.'],
+  tugas: ['Tugas', 'Pekerjaan, penanggung jawab, tenggat, dan status.'],
+  setuju: ['Persetujuan', 'Usulan perubahan status yang menunggu keputusan.'],
+  notif: ['Notifikasi', 'Pemberitahuan untuk Anda.'],
+  ajukan: ['Ajukan akses', 'Minta Admin mendaftarkan akun Anda sebagai pegawai.'],
+  setelan: ['Setelan', 'Akun, password, tampilan, pasang aplikasi, dan administrasi.']
+};
+const MENU_ROLE = {
+  tamu: ['', 'rekap', 'ajukan', 'setelan'],
+  umum: ['', 'pm', 'tambahan', 'rekap', 'analisis', 'tugas', 'notif', 'setelan'],
+  khusus: ['', 'pm', 'tambahan', 'rekap', 'analisis', 'pengingat', 'tugas', 'setuju', 'notif', 'setelan'],
+  kepala: ['', 'pm', 'tambahan', 'rekap', 'analisis', 'pengingat', 'tugas', 'setuju', 'notif', 'setelan'],
+  admin: ['', 'pm', 'tambahan', 'rekap', 'analisis', 'pengingat', 'tugas', 'notif', 'setelan']
+};
+const SH = k => ({ setuju: 'Setuju', notif: 'Notif', tambahan: 'Tambahan', pengingat: 'Ingat' }[k] || MENU[k][0]);
+const PRIO = ['', 'pm', 'setuju', 'notif', 'tugas', 'rekap', 'ajukan', 'tambahan', 'pengingat', 'analisis', 'setelan'];
+
+function sidebarDemo() {
+  const its = MENU_ROLE[S.role];
+  return frame(`<div class="sidebar" data-demo="menu">${its.map((k, i) => `<button type="button" data-k="${k}" aria-pressed="${i === 0}">${MENU[k][0]}</button>`).join('')}</div><div class="sdesc" id="sdesc">${MENU[its[0]][1]}</div>`);
+}
+function phoneNav(badge) {
+  const its = MENU_ROLE[S.role], lain = its.length > 5;
+  const bar = lain ? PRIO.filter(k => its.includes(k)).slice(0, 4) : its;
+  return phone(`<h4>Beranda</h4>${card('<b>Total PM aktif</b><span>128 (contoh)</span>')}`,
+    `<div class="pnav">${bar.map((k, i) => `<span class="${i === 0 ? 'on' : ''}">${SH(k)}${k === 'notif' && badge ? '<b class="badge">3</b>' : ''}</span>`).join('')}${lain ? `<span class="${badge && !bar.includes('notif') ? 'hl' : ''}">Menu${badge && !bar.includes('notif') && its.includes('notif') ? '<b class="badge">3</b>' : ''}</span>` : ''}</div>`);
+}
+
+const PM = [
+  { n: 'Contoh Satu', r: 'REG-0001', s: 'Aktif', d: 3 }, { n: 'Contoh Dua', r: 'REG-0002', s: 'Aktif', d: 1 },
+  { n: 'Contoh Tiga', r: 'REG-0003', s: 'Nonaktif', d: 5 }, { n: 'Contoh Empat', r: 'REG-0004', s: 'Aktif', d: 2 },
+  { n: 'Contoh Lima', r: 'REG-0005', s: 'Nonaktif', d: 4 }
+];
+const pmDemo = hl => frame(`<h4>Data PM</h4><div class="mf ${hl === 'cari' ? 'hl' : ''}"><small>Cari nama atau registrasi</small><input id="dq" data-demo="cari" placeholder="coba ketik: dua" style="border:0;background:transparent;color:inherit;font:inherit;outline:0;padding:0"></div><div class="${hl === 'filter' ? 'hl' : ''}" style="display:flex;gap:6px;flex-wrap:wrap" id="dchips"><button type="button" class="chip" data-s="Aktif" aria-pressed="false">Aktif</button><button type="button" class="chip" data-s="Nonaktif" aria-pressed="false">Nonaktif</button></div><div id="dlist" style="display:grid;gap:6px"></div>`);
+function drawPm() {
+  const q = ($('#dq') || { value: '' }).value.trim().toLowerCase(), ch = [...document.querySelectorAll('#dchips .chip[aria-pressed="true"]')].map(b => b.dataset.s);
+  const rows = PM.filter(p => (!q || (p.n + ' ' + p.r).toLowerCase().includes(q)) && (!ch.length || ch.includes(p.s)));
+  const el = $('#dlist'); if (!el) return;
+  el.innerHTML = rows.length ? rows.map(p => `<div class="prow"><div><b>${p.n}</b><br><small>${p.r} · desil ${p.d}</small></div><span class="st ${p.s === 'Aktif' ? 'g' : 'w'}">${p.s}</span></div>`).join('') : '<div class="prow"><small>Tidak ada PM yang cocok. Ubah kata kunci atau filter.</small></div>';
+}
+const TABS = { 'Profil': 'Identitas, alamat, dan data dasar PM. NIK tampil disamarkan.', 'Desil dan BPJS': 'Status BPJS/KIS, desil, tanggal pembaruan. Data kosong berarti belum diketahui.', 'Data Tambahan': 'Catatan tenaga profesional sesuai tingkat akses.', 'Dokumen': 'Berkas PM beserta kategori, pengunggah, dan status verifikasi.', 'Riwayat': 'Setiap perubahan: apa yang berubah, siapa, dan kapan.' };
+const tabsDemo = () => frame(`<h4>Contoh Dua</h4><div class="tabs" role="tablist" data-demo="tabs">${Object.keys(TABS).map((t, i) => `<button type="button" role="tab" aria-selected="${i === 0}">${t}</button>`).join('')}</div><div class="sdesc" id="tdesc">${TABS.Profil}</div>`);
+const nikDemo = hl => frame(`<h4>Contoh Dua</h4>${card('<small>NIK</small><b id="nikv">3514 •••• •••• 0002</b>')}<div class="mf ${hl === 'alasan' ? 'hl' : ''}"><small>Alasan membuka NIK (min. 3 huruf)</small><input id="nikr" style="border:0;background:transparent;color:inherit;font:inherit;outline:0;padding:0" placeholder="contoh: verifikasi berkas"></div><div class="acts"><button type="button" class="${hl === 'buka' ? 'hl' : ''}" data-demo="nik">Buka NIK</button></div><div class="err" id="nikerr"></div><div class="log" id="niklog"></div>`);
+const FL = ['Draf', 'Menunggu', 'Perlu revisi', 'Disetujui', 'Ditolak', 'Dibatalkan'];
+const FL_K = { 'Draf': 'n', 'Menunggu': 'w', 'Perlu revisi': 'w', 'Disetujui': 'g', 'Ditolak': 'b', 'Dibatalkan': 'n' };
+const FL_ACT = { 'Draf': [['Ajukan', 'Menunggu'], ['Batalkan', 'Dibatalkan']], 'Menunggu': [['Setujui (Kepala)', 'Disetujui'], ['Tolak (Kepala)', 'Ditolak'], ['Minta revisi (Kepala)', 'Perlu revisi']], 'Perlu revisi': [['Ajukan ulang', 'Menunggu'], ['Jadikan draf', 'Draf'], ['Batalkan', 'Dibatalkan']] };
+function flowDemo() {
+  return frame(`<h4>Usulan: Aktif ke Nonaktif</h4><div class="flow" id="fchips">${FL.map(s => `<span class="st ${FL_K[s]}" data-s="${s}">${s}</span>`).join('')}</div><div class="acts" id="facts" data-demo="flow"></div><div class="sdesc" id="fnote"></div>`);
+}
+function drawFlow(cur) {
+  document.querySelectorAll('#fchips .st').forEach(e => e.classList.toggle('cur', e.dataset.s === cur));
+  const a = FL_ACT[cur];
+  $('#facts').innerHTML = a ? a.map(x => `<button type="button" data-to="${x[1]}">${x[0]}</button>`).join('') : '<button type="button" data-to="Draf">Mulai ulang contoh</button>';
+  $('#fnote').textContent = { 'Draf': 'Hanya Anda yang melihat draf. Tekan Ajukan agar sampai ke Kepala.', 'Menunggu': 'Kepala memutuskan. Pilih salah satu untuk melihat hasilnya.', 'Perlu revisi': 'Pengaju memperbaiki usulan, lalu mengajukan ulang atau menyimpannya sebagai draf.', 'Disetujui': 'Selesai. Keputusan, pemutus, dan waktunya tercatat di Riwayat.', 'Ditolak': 'Selesai. Catatan keputusan tercatat di Riwayat.', 'Dibatalkan': 'Usulan dibatalkan oleh pengaju.' }[cur];
+}
+
+/* ---------- jelajah menu: penjelasan dan pratinjau komputer / ponsel ---------- */
+const INFO = {
+  '': ['Ringkasan keadaan data: total PM aktif, statistik BPJS dan desil, sebaran, data yang belum lengkap, dan aktivitas terbaru. Angkanya dihitung dari data sumber yang sama dengan Data PM dan Rekap.', 'Semua peran. Tamu hanya melihat statistik umum.'],
+  pm: ['Daftar semua Penerima Manfaat. Cari, saring, urutkan, buka profil dengan lima tab (Profil, Desil dan BPJS, Data Tambahan, Dokumen, Riwayat), serta tambah dan ubah data.', 'Selain Tamu. Menambah dan mengubah: pegawai khusus, Kepala, Admin.'],
+  tambahan: ['Catatan dari tenaga profesional per kategori. Tingkat akses Umum, Terbatas, atau Rahasia menentukan siapa yang bisa membaca isinya.', 'Selain Tamu.'],
+  rekap: ['Rekap jumlah per kategori dan periode, dengan pembanding dan selisih. Bisa dicetak.', 'Semua peran. Tamu hanya statistik umum.'],
+  analisis: ['Analisis data PM yang lebih rinci untuk perencanaan dan laporan.', 'Selain Tamu.'],
+  pengingat: ['Daftar data yang perlu diperbarui atau dilengkapi, agar tidak ada PM yang terlewat.', 'Pegawai khusus, Kepala, Admin.'],
+  tugas: ['Pekerjaan dengan penanggung jawab, tenggat, dan status (Baru, Dikerjakan, Selesai, Dibatalkan).', 'Selain Tamu. Kepala dan Admin melihat tugas semua orang.'],
+  setuju: ['Usulan perubahan status PM yang menunggu keputusan, dengan tab Menunggu, Draf saya, Perlu revisi, dan Riwayat.', 'Kepala dan peran yang boleh mengusulkan status.'],
+  notif: ['Pemberitahuan untuk Anda, misalnya usulan yang perlu diputuskan atau permintaan akses baru. Lencana angka menandai yang belum dibaca.', 'Selain Tamu.'],
+  ajukan: ['Formulir bagi Tamu untuk meminta Admin mendaftarkan akunnya sebagai pegawai.', 'Tamu.'],
+  setelan: ['Data akun, username dan password, pasang aplikasi, tema terang atau gelap, administrasi, dan keluar.', 'Semua peran. Isi bagian Administrasi bergantung pada peran.']
+};
+const stp = (n, k, v) => `<div class="prow"><div><b>${n}</b><br><small>${k}</small></div>${v}</div>`;
+const PAGE = {
+  '': () => `<h4>Beranda</h4><div class="stat"><div><small>PM aktif</small><b>128</b></div><div><small>BPJS terdaftar</small><b>96</b></div><div><small>Data belum lengkap</small><b>12</b></div></div><div class="bars"><div>Desil 1<i style="width:70%"></i></div><div>Desil 2<i style="width:48%"></i></div><div>Desil 3<i style="width:30%"></i></div></div><div class="log">Aktivitas terbaru: data Contoh Dua diperbarui</div>`,
+  pm: () => `<h4>Data PM</h4><div class="mf"><small>Cari nama atau registrasi</small></div>${stp('Contoh Satu', 'REG-0001 · desil 3', '<span class="st g">Aktif</span>')}${stp('Contoh Dua', 'REG-0002 · desil 1', '<span class="st g">Aktif</span>')}${stp('Contoh Tiga', 'REG-0003 · desil 5', '<span class="st w">Nonaktif</span>')}`,
+  tambahan: () => `<h4>Data Tambahan</h4>${stp('Contoh Satu', 'Asesmen psikologi', '<span class="st n">Terbatas</span>')}${stp('Contoh Dua', 'Catatan fisioterapi', '<span class="st g">Umum</span>')}${stp('Contoh Empat', 'Catatan khusus', '<span class="st b">Rahasia</span>')}`,
+  rekap: () => `<h4>Rekap</h4><div class="tbl"><div><span>Kategori</span><span>Jumlah</span><span>Banding</span><span>Selisih</span></div><div><span>Desil 1</span><span>24</span><span>21</span><span>+3</span></div><div><span>Desil 2</span><span>31</span><span>33</span><span>−2</span></div></div><div class="acts"><button type="button">Cetak</button></div>`,
+  analisis: () => `<h4>Analisis</h4><div class="bars"><div>Usia 6-12<i style="width:35%"></i></div><div>Usia 13-17<i style="width:62%"></i></div><div>Usia 18+<i style="width:80%"></i></div></div><div class="log">Sebaran contoh, bukan data sebenarnya</div>`,
+  pengingat: () => `<h4>Pengingat</h4>${stp('BPJS belum diverifikasi', 'Perlu diperbarui', '<span class="st w">12 PM</span>')}${stp('Desil belum diisi', 'Perlu dilengkapi', '<span class="st w">5 PM</span>')}`,
+  tugas: () => `<h4>Tugas</h4>${stp('Lengkapi data desil', 'Tenggat 20 Okt · Anda', '<span class="st n">Baru</span>')}${stp('Verifikasi dokumen', 'Tenggat 22 Okt · Anda', '<span class="st w">Dikerjakan</span>')}`,
+  setuju: () => `<h4>Persetujuan</h4><div class="tabs"><button type="button" role="tab" aria-selected="true">Menunggu</button><button type="button" role="tab" aria-selected="false">Draf saya</button><button type="button" role="tab" aria-selected="false">Riwayat</button></div>${stp('Contoh Dua', 'Aktif ke Nonaktif', '<span class="st w">Menunggu</span>')}`,
+  notif: () => `<h4>Notifikasi</h4>${stp('Usulan perlu diputuskan', '5 menit lalu', '<span class="st b">Baru</span>')}${stp('Tugas jatuh tempo besok', '1 jam lalu', '<span class="st b">Baru</span>')}`,
+  ajukan: () => `<h4>Ajukan akses</h4>${field('Nama', 'Nama Anda')}${btn('Kirim pengajuan', false, 'wide')}`,
+  setelan: () => {
+    const t = { tamu: ['Ajukan akses'], umum: ['Kualitas data'], khusus: ['Kualitas data'], kepala: ['Audit log', 'Kualitas data'], admin: ['Pengguna dan role', 'Permintaan akses', 'Audit log', 'Kualitas data'] }[S.role];
+    return `<h4>Setelan</h4><div class="mc"><b>Akun saya</b><small>${ROLES[S.role]}</small></div><div class="mc"><b>Pasang aplikasi</b></div><div class="mc"><b>Administrasi</b><div class="tiles">${t.map(x => `<span class="chip">${x}</span>`).join('')}</div></div>${btn('Keluar', false, 'dgr')}`;
+  }
+};
+const ICO = {
+  home: '<path d="M3 11l9-8 9 8M5 10v10h14V10"/>', users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 5a3.2 3.2 0 010 6M18 14c2.4.5 3.5 2.4 3.5 5"/>',
+  file: '<path d="M6 3h8l4 4v14H6zM14 3v4h4M9 13h6M9 17h6"/>', chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  bell: '<path d="M6 16v-5a6 6 0 1112 0v5l2 2H4zM10 21h4"/>', check: '<path d="M5 12l5 5 9-10"/>',
+  shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>', phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>', sliders: '<path d="M3 7h11M18 7h3M3 17h3M10 17h11"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+  list: '<path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/>', plus: '<path d="M12 5v14M5 12h14"/>', layers: '<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>'
+};
+const ico = (n, c = '') => `<span class="ic ${c}" aria-hidden="true"><svg viewBox="0 0 24 24">${ICO[n]}</svg></span>`;
+const MI = { '': 'home', pm: 'users', tambahan: 'file', rekap: 'chart', analisis: 'layers', pengingat: 'bell', tugas: 'list', setuju: 'check', notif: 'bell', ajukan: 'plus', setelan: 'sliders' };
+const LI = { masuk: ['lock', ''], pasang: ['phone', 'c2'], menu: ['list', 'c3'], cari: ['users', ''], tambah: ['plus', 'c2'], nik: ['shield', 'c4'], usul: ['check', 'c3'], putus: ['check', ''], tugas: ['bell', 'c4'], rekap: ['chart', 'c2'], admin: ['sliders', 'c3'], ajukan: ['plus', ''] };
+const PTS = [['layers', '', 'Satu pintu data', 'Semua angka di Beranda, Rekap, dan Data PM dihitung dari data sumber yang sama.'], ['users', 'c2', 'Akses sesuai peran', 'Menu dan tombol menyesuaikan peran Anda, dan hak akses diperiksa di server.'], ['shield', 'c4', 'Data rahasia terlindungi', 'NIK disamarkan. Membukanya wajib beralasan dan tercatat di audit log.'], ['phone', 'c3', 'Komputer dan ponsel', 'Tampilan menyesuaikan layar, dan bisa dipasang di layar utama seperti aplikasi.']];
+const E = { menu: '', sheet: false };
+function renderExplore() {
+  const its = MENU_ROLE[S.role]; if (!its.includes(E.menu)) E.menu = '';
+  $('#pts').innerHTML = PTS.map(p => `<div class="pt">${ico(p[0], p[1])}<b>${p[2]}</b><span>${p[3]}</span></div>`).join('');
+  $('#xrole').textContent = ROLES[S.role];
+  $('#xchips').innerHTML = its.map(k => `<button type="button" class="chip" data-xm="${k}" aria-pressed="${k === E.menu}"><svg viewBox="0 0 24 24">${ICO[MI[k]]}</svg>${MENU[k][0]}</button>`).join('');
+  const [fn, who] = INFO[E.menu];
+  $('#xtext').innerHTML = `<div><h3>${MENU[E.menu][0]}</h3><p>${fn}</p></div><div class="xwho"><b>Siapa yang memakai</b>${who}</div>`;
+  $('#xdsk').innerHTML = `<div class="dsk"><div class="sb"><div class="logo">Data<span>PM</span> RSBD</div>${its.map(k => `<button type="button" data-xm="${k}" class="${k === E.menu ? 'on' : ''}">${MENU[k][0]}</button>`).join('')}</div><div class="ct">${PAGE[E.menu]()}</div></div>`;
+  const lain = its.length > 5, bar = lain ? PRIO.filter(k => its.includes(k)).slice(0, 4) : its;
+  const body = E.sheet ? `<h4>Menu</h4><div class="sheet">${its.map(k => `<button type="button" class="mi" data-xm="${k}">${MENU[k][0]}</button>`).join('')}</div>` : PAGE[E.menu]();
+  const bst = 'border:0;background:transparent;font:inherit;padding:8px 2px;position:relative;color:inherit';
+  const nv = `<div class="pnav">${bar.map(k => `<button type="button" data-xm="${k}" style="${bst}" class="${k === E.menu && !E.sheet ? 'on' : ''}">${SH(k)}${k === 'notif' ? '<b class="badge">3</b>' : ''}</button>`).join('')}${lain ? `<button type="button" data-xsheet style="${bst}" class="${E.sheet ? 'on' : ''}">Menu${its.includes('notif') && !bar.includes('notif') ? '<b class="badge">3</b>' : ''}</button>` : ''}</div>`;
+  $('#xph').innerHTML = phone(body, nv);
+}
+const T = { tab: 'kenal' };
+function showTab(t) {
+  T.tab = t;
+  ['kenal', 'belajar', 'tanya'].forEach(k => { $('#p-' + k).hidden = k !== t; });
+  document.querySelectorAll('.tabbar [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+}
+
+/* ---------- isi pelajaran ---------- */
+const L = [
+  { id: 'masuk', t: 'Masuk dan keluar', f: ['tamu', 'umum', 'khusus', 'kepala', 'admin'], s: [
+    { t: 'Masuk dengan Google', d: 'Tekan <b>Lanjutkan sebagai</b> dengan akun Google Anda. Akun yang belum didaftarkan masuk sebagai Tamu dan hanya melihat rekap statistik.', m: () => login('google') },
+    { t: 'Atau dengan username dan password', d: 'Username dan password dibuat sekali di <b>Setelan</b> setelah Anda masuk lewat Google. Setelah itu isi kedua kolom, lalu tekan <b>Masuk</b>. Tombol <b>Lihat</b> menampilkan password yang diketik.', m: () => login('form') },
+    { t: 'Ingat saya', d: 'Centang agar username terisi otomatis dan Anda tidak perlu masuk ulang selama sesi masih berlaku, maksimal 6 jam. Password tidak pernah disimpan.', n: 'Jangan dicentang di komputer atau ponsel bersama.', m: () => login('ingat') },
+    { t: 'Keluar', d: 'Buka <b>Setelan</b>, lalu tekan <b>Keluar</b> di bagian Sesi. Di komputer, tombol Keluar juga ada di menu samping. Sesi yang diingat ikut terhapus.', m: () => settings('keluar') }
+  ] },
+  { id: 'pasang', t: 'Pasang di layar utama', f: ['tamu', 'umum', 'khusus', 'kepala', 'admin'], s: [
+    { t: 'Buka Setelan', d: 'Bagian <b>Pasang aplikasi</b> ada di halaman Setelan.', m: () => settings('pasang') },
+    { t: 'Android: tekan Pasang aplikasi', d: 'Buka dengan Chrome atau Edge, tekan <b>Pasang aplikasi</b>, lalu konfirmasi. Ikon DataPM muncul di layar utama dan terbuka layar penuh.', m: () => settings('pasang') },
+    { t: 'iPhone: Tambah ke Layar Utama', d: 'Buka di <b>Safari</b>, ketuk <b>Bagikan</b> (kotak dengan panah ke atas), lalu pilih <b>Tambah ke Layar Utama</b>.', m: () => phone(`<h4>Bagikan</h4><div class="mi">Salin</div><div class="mi hl">Tambah ke Layar Utama</div><div class="mi">Tambah Markah</div>`) },
+    { t: 'Saat tidak ada internet', d: 'Aplikasi tetap terbuka dan menampilkan bilah oranye. Data tidak dapat dimuat atau disimpan, dan data PM tidak disimpan di perangkat. Bila muncul <b>Versi baru tersedia</b>, tekan <b>Muat ulang</b>.', m: () => phone(`<div class="off" style="margin:-10px -10px 4px">Tidak ada sambungan internet</div><h4>Beranda</h4>${card('<span>Data tidak dapat dimuat.</span>')}`) }
+  ] },
+  { id: 'menu', t: 'Mengenal menu', f: ['tamu', 'umum', 'khusus', 'kepala', 'admin'], s: [
+    { t: 'Menu sesuai peran', d: 'Menu yang tampil bergantung pada peran. Ketuk setiap menu di contoh untuk melihat fungsinya. Bila sebuah menu tidak ada, peran Anda memang tidak memilikinya.', m: () => sidebarDemo() },
+    { t: 'Bilah bawah di ponsel', d: 'Di ponsel, empat menu penting tampil di bawah. Menu lainnya ada di tombol <b>Menu</b>.', m: () => phoneNav(false) },
+    { t: 'Lencana notifikasi', d: 'Angka merah menandakan notifikasi yang belum dibaca. Daftar diperbarui otomatis setiap dua menit. Bila Notifikasi masuk ke tombol Menu, lencana ikut pindah ke sana.', m: () => phoneNav(true) }
+  ] },
+  { id: 'cari', t: 'Mencari dan membuka data PM', f: ['umum', 'khusus', 'kepala', 'admin'], s: [
+    { t: 'Cari nama atau registrasi', d: 'Buka <b>Data PM</b>, lalu ketik di kolom pencarian. Coba ketik di contoh.', m: () => pmDemo('cari') },
+    { t: 'Saring dengan filter', d: 'Filter tersedia untuk status, desil, usia, agama, kabupaten, dan asrama, plus pilihan urutan. Coba tekan filter di contoh.', m: () => pmDemo('filter') },
+    { t: 'Buka profil', d: 'Tekan nama atau <b>Lihat</b>. Profil punya lima tab. Ketuk tiap tab di contoh.', m: () => tabsDemo() },
+    { t: 'Di ponsel', d: 'Daftar tampil sebagai kartu. Tekan <b>Filter &amp; urutan</b> untuk membuka pilihan filter, dan tekan lagi untuk menutupnya.', m: () => phone(`<h4>Data PM</h4><div class="mf"><small>Cari</small>nama atau registrasi</div>${btn('Filter &amp; urutan', true, 'ghost')}<div class="prow"><div><b>Contoh Satu</b><br><small>REG-0001</small></div><span class="st g">Aktif</span></div>`) }
+  ] },
+  { id: 'tambah', t: 'Menambah dan mengubah PM', f: ['khusus', 'kepala', 'admin'], s: [
+    { t: 'Tekan Tambah PM', d: 'Tombol <b>Tambah PM</b> ada di halaman Data PM.', m: () => page('Data PM', `<div>${btn('Tambah PM', true)}</div>`, `<div class="prow"><b>Contoh Satu</b><span class="st g">Aktif</span></div>`) },
+    { t: 'Isi formulir', d: 'Kolom wajib ditandai. Isian yang salah format ditolak dengan pesan di bawah kolomnya, jadi perbaiki dulu sebelum menyimpan.', m: () => page('PM baru', field('Nama lengkap *', 'Contoh Enam', false), field('NIK *', '351400000000', true), '<div class="err">NIK harus 16 digit.</div>', btn('Simpan', false)) },
+    { t: 'Pencegahan data ganda', d: 'Bila NIK atau nomor registrasi sudah dipakai PM aktif, penyimpanan ditolak. Bila nama dan tanggal lahir sama dengan PM lain, aplikasi meminta Anda memastikan bahwa ini bukan data ganda.', n: 'Bila PM sudah ada, cari dan ubah datanya, jangan tambah baru.', m: () => page('PM baru', '<div class="note" style="margin:0">Nama dan tanggal lahir sama dengan PM lain. Pastikan ini bukan data ganda.</div>', btn('Tetap simpan', false), btn('Batal', false, 'ghost')) },
+    { t: 'Ubah dan lihat riwayat', d: 'Buka profil, tekan <b>Ubah</b>, perbaiki isian, lalu simpan. Setiap perubahan tercatat di tab <b>Riwayat</b> dan audit log.', m: () => page('Contoh Dua', `<div>${btn('Ubah', true)}</div>`, `<div class="log">Riwayat: desil 2 diubah menjadi 3 · oleh Anda · hari ini</div>`) }
+  ] },
+  { id: 'nik', t: 'Membuka NIK', f: ['khusus', 'kepala'], s: [
+    { t: 'NIK tampil disamarkan', d: 'Demi keamanan, NIK tidak tampil penuh. Hanya peran yang diberi izin, seperti Kepala, yang bisa membukanya.', m: () => nikDemo('') },
+    { t: 'Tulis alasan, lalu buka', d: 'Tulis alasan singkat (minimal 3 huruf), lalu tekan <b>Buka NIK</b>. Coba di contoh: biarkan alasan kosong dulu.', m: () => nikDemo('alasan') },
+    { t: 'Tercatat di audit log', d: 'Setiap pembukaan NIK tercatat bersama alasannya, siapa yang membuka, dan kapan. Jadi buka hanya bila benar-benar perlu.', n: 'Bagi pegawai khusus, tombol ini hanya ada bila Admin memberi izin.', m: () => nikDemo('buka') }
+  ] },
+  { id: 'usul', t: 'Mengusulkan perubahan status', f: ['khusus'], s: [
+    { t: 'Tekan Usulkan', d: 'Buka profil PM, lalu tekan <b>Usulkan</b>. Tombol ini hanya ada bila peran Anda diizinkan mengusulkan status.', m: () => page('Contoh Dua', `<div>${btn('Usulkan', true)}</div>`) },
+    { t: 'Isi status tujuan dan alasan', d: 'Pilih status tujuan, tulis alasan, dan lampirkan bukti bila diminta.', m: () => page('Usulan status', field('Status tujuan', 'Nonaktif', true), field('Alasan', 'Pindah domisili', true)) },
+    { t: 'Draf atau ajukan', d: 'Simpan sebagai <b>draf</b> bila belum siap (hanya Anda yang melihatnya), atau <b>ajukan</b> agar sampai ke Kepala.', m: () => page('Usulan status', `<div class="acts">${btn('Simpan draf', true, 'ghost')} ${btn('Ajukan', true)}</div>`) },
+    { t: 'Coba alurnya', d: 'Usulan lewat beberapa status sebelum selesai. Tekan tombol di contoh untuk menjalankannya.', m: () => flowDemo(), flow: true }
+  ] },
+  { id: 'putus', t: 'Memutuskan usulan status', f: ['kepala'], s: [
+    { t: 'Buka Persetujuan', d: 'Menu <b>Persetujuan</b>, tab <b>Menunggu</b> berisi usulan yang perlu keputusan Anda. Tab lain: Draf saya, Perlu revisi, dan Riwayat.', m: () => page('Persetujuan', `<div class="tabs"><button type="button" role="tab" aria-selected="true">Menunggu</button><button type="button" role="tab" aria-selected="false">Draf saya</button><button type="button" role="tab" aria-selected="false">Riwayat</button></div>`, `<div class="prow"><div><b>Contoh Dua</b><br><small>Aktif ke Nonaktif</small></div><span class="st w">Menunggu</span></div>`) },
+    { t: 'Setujui, tolak, atau minta revisi', d: 'Baca alasan dan bukti, pilih keputusan, lalu tulis catatan. Keputusan, pemutus, dan waktunya tercatat.', n: 'Admin hanya dapat memutuskan bila mode uji diaktifkan.', m: () => page('Contoh Dua', `<div class="acts">${btn('Setujui', true)} ${btn('Tolak', true, 'dgr')} ${btn('Minta revisi', true, 'ghost')}</div>`) },
+    { t: 'Coba alurnya', d: 'Jalankan contoh sampai selesai dan lihat apa yang terjadi di tiap status.', m: () => flowDemo(), flow: true }
+  ] },
+  { id: 'tugas', t: 'Tugas, pengingat, notifikasi', f: ['umum', 'khusus', 'kepala', 'admin'], s: [
+    { t: 'Tugas', d: 'Catat pekerjaan, tentukan penanggung jawab dan tenggat, lalu ubah status sampai selesai. Kepala dan Admin melihat tugas semua orang, peran lain hanya tugasnya sendiri.', m: () => page('Tugas', `<div class="prow"><div><b>Lengkapi data desil</b><br><small>Tenggat 20 Okt · Anda</small></div><span class="st n">Baru</span></div>`) },
+    { t: 'Pengingat dan kualitas data', d: 'Pengingat berisi data yang perlu diperbarui, tersedia bagi pegawai khusus, Kepala, dan Admin. Halaman <b>Kualitas data</b> di Setelan menunjukkan isian yang belum lengkap atau salah format.', m: () => page('Pengingat', `<div class="prow"><span>BPJS belum diverifikasi</span><span class="st w">12 PM</span></div>`) },
+    { t: 'Notifikasi', d: 'Pemberitahuan untuk Anda, misalnya usulan yang perlu diputuskan atau permintaan akses baru. Buka untuk menandainya sudah dibaca.', m: () => phoneNav(true) }
+  ] },
+  { id: 'rekap', t: 'Rekap, analisis, dan cetak', f: ['tamu', 'umum', 'khusus', 'kepala', 'admin'], s: [
+    { t: 'Pilih kategori dan periode', d: 'Buka <b>Rekap</b>, lalu pilih kategori dan periode. Tamu hanya melihat statistik umum, dan kelompok yang terlalu kecil digabung agar identitas tidak dapat ditebak.', m: () => page('Rekap', field('Kategori', 'Desil', true), field('Periode', 'Oktober 2026', true)) },
+    { t: 'Bandingkan dua periode', d: 'Aktifkan pembanding untuk melihat kolom pembanding dan selisih. Total di Rekap harus sama dengan Beranda dan Data PM.', m: () => page('Rekap', `<div class="prow"><b>Desil 1</b><span>24 · 21 · +3</span></div><div class="prow"><b>Desil 2</b><span>31 · 33 · −2</span></div>`) },
+    { t: 'Cetak dan ekspor', d: 'Tekan <b>Cetak</b> untuk mencetak atau menyimpan PDF lewat dialog cetak browser. Ekspor data pribadi hanya untuk Kepala dan tercatat di audit log.', n: 'Di ponsel, hasil cetak bergantung pada browser. Untuk laporan resmi, cetak dari komputer.', m: () => page('Rekap', `<div class="acts">${btn('Cetak', true, 'ghost')} ${btn('Ekspor', false, 'ghost')}</div>`) }
+  ] },
+  { id: 'admin', t: 'Mengelola pengguna dan akses', f: ['admin'], s: [
+    { t: 'Pengguna dan role', d: 'Di <b>Setelan &gt; Administrasi</b>, tambah pegawai dengan email Google, pilih peran, dan aktifkan atau nonaktifkan akun. Anda tidak dapat menurunkan akun Anda sendiri, dan harus selalu ada minimal satu Admin aktif.', m: () => page('Pengguna dan role', `<div class="prow"><div><b>pegawai@contoh.id</b><br><small>Pegawai umum</small></div><span class="st g">Aktif</span></div>`, `<div>${btn('Tambah pengguna', true)}</div>`) },
+    { t: 'Permintaan akses', d: 'Tamu yang mengajukan akses muncul di sini dan di Notifikasi. Setujui, lalu tentukan perannya.', m: () => page('Permintaan akses', `<div class="prow"><span>tamu@contoh.id</span>${btn('Setujui', true)}</div>`) },
+    { t: 'Audit log dan kualitas data', d: 'Audit log mencatat aktivitas penting: pembukaan NIK, ekspor, dan keputusan. Gunakan untuk menelusuri siapa mengubah apa dan kapan. Halaman Kualitas data menunjukkan data yang belum lengkap.', m: () => page('Audit log', `<div class="log">10:42 · VIEW_NIK · kepala@contoh.id · verifikasi berkas</div><div class="log">10:50 · UBAH_PM · peksos@contoh.id</div>`) },
+    { t: 'Prinsip pemberian peran', d: 'Beri peran paling kecil yang cukup untuk pekerjaan seseorang. Jangan membagikan akun, karena audit log mencatat nama pemilik akun. Daftar asrama dan keterampilan juga dikelola dari Setelan.', m: () => settings('') }
+  ] },
+  { id: 'ajukan', t: 'Mengajukan akses', f: ['tamu'], s: [
+    { t: 'Buka Ajukan akses', d: 'Akun Google yang belum terdaftar masuk sebagai Tamu. Buka menu <b>Ajukan akses</b>.', m: () => phone(`<h4>Ajukan akses</h4>${field('Nama', 'Nama Anda', false)}${btn('Kirim pengajuan', true, 'wide')}`) },
+    { t: 'Tunggu Admin menyetujui', d: 'Admin menerima notifikasi dan menentukan peran Anda. Anda tidak perlu mengirim ulang.', m: () => phone(`<h4>Ajukan akses</h4>${card('<b>Pengajuan terkirim</b><span>Menunggu persetujuan Admin.</span>')}`) },
+    { t: 'Masuk ulang', d: 'Setelah disetujui, keluar lalu masuk lagi dengan akun yang sama agar menu sesuai peran baru Anda.', m: () => login('google') }
+  ] }
+];
+
+const FAQ = [
+  ['Menu atau tombol yang dijelaskan tidak ada di layar saya', 'Peran Anda tidak memiliki hak itu. Bila memang diperlukan, minta Admin menyesuaikan peran Anda.'],
+  ['Saya masuk sebagai Tamu padahal pegawai', 'Akun Google Anda belum didaftarkan. Buka Ajukan akses, atau minta Admin mendaftarkan email Anda.'],
+  ['Muncul pesan sesi berakhir', 'Sesi habis (maksimal 6 jam). Masuk lagi. Centang Ingat saya agar tidak perlu mengetik ulang username.'],
+  ['Tombol Pasang aplikasi tidak muncul', 'Browser tidak mendukung, atau aplikasi sudah terpasang. Gunakan Chrome atau Edge lewat https. Di iPhone, pakai Safari lalu Tambah ke Layar Utama.'],
+  ['Ada bilah oranye di atas layar (offline)', 'Tidak ada sambungan internet. Periksa sambungan, lalu coba lagi.'],
+  ['Tampilan masih versi lama setelah pembaruan', 'Tekan Muat ulang pada pesan Versi baru tersedia, atau muat ulang halaman.'],
+  ['Penyimpanan PM ditolak karena NIK atau registrasi sudah ada', 'PM itu sudah terdaftar. Cari PM tersebut di daftar dan ubah datanya, jangan tambah baru.'],
+  ['Lupa password', 'Masuk dengan Google, lalu atur ulang di Setelan, bagian Username dan password.'],
+  ['Hasil cetak PDF di ponsel berantakan', 'Hasil cetak bergantung pada browser ponsel, terutama iPhone. Cetak laporan resmi dari komputer.']
+];
+
+/* ---------- keadaan dan tampilan ---------- */
+const S = { role: 'umum', lesson: null, step: 0, done: new Set() };
+try { const r = lsGet(KEY_ROLE); if (r && ROLES[r]) S.role = r; const d = JSON.parse(lsGet(KEY_DONE) || '[]'); if (Array.isArray(d)) S.done = new Set(d); } catch (e) { /* abaikan */ }
+const mine = () => L.filter(x => x.f.includes(S.role));
+const saveDone = () => lsSet(KEY_DONE, JSON.stringify([...S.done]));
+
+function renderRoles() {
+  $('#roles').innerHTML = '<legend>Peran saya</legend>' + Object.keys(ROLES).map(k => `<label><input type="radio" name="peran" value="${k}" ${k === S.role ? 'checked' : ''}><span>${ROLES[k]}</span></label>`).join('');
+}
+function renderList() {
+  const ls = mine(), n = ls.filter(x => S.done.has(x.id)).length;
+  $('#barfill').style.width = (ls.length ? n / ls.length * 100 : 0) + '%';
+  $('#progtxt').textContent = `${n} dari ${ls.length} pelajaran selesai`;
+  $('#list').innerHTML = ls.map(x => { const [i, c] = LI[x.id] || ['list', '']; return `<button type="button" class="${S.done.has(x.id) ? 'done' : ''}" data-id="${x.id}" ${x.id === S.lesson ? 'aria-current="true"' : ''}>${S.done.has(x.id) ? ico('check', c) : ico(i, c)}<span>${x.t}<small>${x.s.length} langkah${S.done.has(x.id) ? ' · selesai' : ''}</small></span></button>`; }).join('');
+}
+function renderPlayer() {
+  const ls = mine(); let les = ls.find(x => x.id === S.lesson);
+  if (!les) { les = ls[0]; S.lesson = les.id; S.step = 0; }
+  const st = les.s[S.step], last = S.step === les.s.length - 1, idx = ls.indexOf(les), next = ls[idx + 1];
+  const all = ls.every(x => S.done.has(x.id));
+  $('#player').innerHTML = `<div class="phead"><h2>${les.t}</h2><span class="tag">${ROLES[S.role]} · langkah ${S.step + 1} dari ${les.s.length}</span></div>
+  <div class="dots" role="group" aria-label="Langkah">${les.s.map((_, i) => `<button type="button" data-step="${i}" ${i === S.step ? 'aria-current="step"' : ''} aria-label="Langkah ${i + 1}">${i + 1}</button>`).join('')}</div>
+  <div class="step"><div><span class="stepno">Langkah ${S.step + 1}</span><h3>${st.t}</h3><p>${st.d}</p>${st.n ? `<div class="note">${st.n}</div>` : ''}</div><div id="mockbox" class="stagebox">${st.m()}</div></div>
+  ${all ? '<div class="fin">Semua pelajaran untuk peran ini sudah selesai. Anda bisa mengulang pelajaran mana pun kapan saja.</div>' : ''}
+  <div class="nav"><button type="button" class="btn" id="prev" ${S.step === 0 ? 'disabled' : ''}>Sebelumnya</button>
+  <button type="button" class="btn pri" id="next">${last ? (next ? 'Selesai, pelajaran berikutnya' : 'Selesai') : 'Berikutnya'}</button></div>`;
+  if (st.flow) drawFlow('Draf');
+  if (document.querySelector('#dlist')) drawPm();
+}
+function renderAll() { renderRoles(); renderList(); renderPlayer(); renderExplore(); }
+
+document.addEventListener('change', e => {
+  if (e.target.name === 'peran') { S.role = e.target.value; lsSet(KEY_ROLE, S.role); S.lesson = mine()[0].id; S.step = 0; renderAll(); }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'dq') drawPm();
+  if (e.target.id === 'faqq') drawFaq();
+});
+document.addEventListener('click', e => {
+  const t = e.target;
+  let el = t.closest('[data-tab]');
+  if (el) { showTab(el.dataset.tab); if (el.classList.contains('btn')) { try { document.querySelector('.tabbar').scrollIntoView({ block: 'start' }); } catch (x) { /* abaikan */ } } return; }
+  el = t.closest('#list button');
+  if (el) { S.lesson = el.dataset.id; S.step = 0; renderList(); renderPlayer(); return; }
+  el = t.closest('.dots button');
+  if (el) { S.step = Number(el.dataset.step); renderPlayer(); return; }
+  if (t.closest('#prev')) { S.step = Math.max(0, S.step - 1); renderPlayer(); return; }
+  if (t.closest('#next')) {
+    const ls = mine(), les = ls.find(x => x.id === S.lesson);
+    if (S.step < les.s.length - 1) { S.step++; renderPlayer(); return; }
+    S.done.add(les.id); saveDone();
+    const nx = ls[ls.indexOf(les) + 1]; if (nx) { S.lesson = nx.id; S.step = 0; }
+    renderList(); renderPlayer(); return;
+  }
+  el = t.closest('[data-xm]');
+  if (el) { E.menu = el.dataset.xm; E.sheet = false; renderExplore(); return; }
+  if (t.closest('[data-xsheet]')) { E.sheet = !E.sheet; renderExplore(); return; }
+  el = t.closest('[data-demo="menu"] button');
+  if (el) { document.querySelectorAll('[data-demo="menu"] button').forEach(b => b.setAttribute('aria-pressed', String(b === el))); $('#sdesc').textContent = MENU[el.dataset.k][1]; return; }
+  el = t.closest('#dchips .chip');
+  if (el) { el.setAttribute('aria-pressed', String(el.getAttribute('aria-pressed') !== 'true')); drawPm(); return; }
+  el = t.closest('[data-demo="tabs"] button');
+  if (el) { document.querySelectorAll('[data-demo="tabs"] button').forEach(b => b.setAttribute('aria-selected', String(b === el))); $('#tdesc').textContent = TABS[el.textContent]; return; }
+  if (t.closest('[data-demo="nik"]')) {
+    const r = $('#nikr').value.trim();
+    if (r.length < 3) { $('#nikerr').textContent = 'Alasan wajib diisi, minimal 3 huruf.'; return; }
+    $('#nikerr').textContent = ''; $('#nikv').textContent = '3514 0000 0000 0002 (contoh)';
+    $('#niklog').textContent = 'Audit log: VIEW_NIK · Anda · alasan: ' + r.slice(0, 60);
+    return;
+  }
+  el = t.closest('[data-demo="flow"] button');
+  if (el) { drawFlow(el.dataset.to); }
+});
+
+function drawFaq() {
+  const q = ($('#faqq').value || '').trim().toLowerCase();
+  const rows = FAQ.filter(x => !q || (x[0] + ' ' + x[1]).toLowerCase().includes(q));
+  $('#faqlist').innerHTML = rows.length ? rows.map(x => `<details><summary>${x[0]}</summary><p>${x[1]}</p></details>`).join('') : '<p class="foot">Tidak ada yang cocok. Coba kata lain, atau hubungi Admin.</p>';
+}
+renderAll(); drawFaq();
+</script>
+
+</body></html>
